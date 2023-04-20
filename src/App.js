@@ -46,8 +46,14 @@ function App() {
       },
     });
 
+    setTarefas((prevState) => [...prevState, tarefa]);
+
     setTitle("");
     setTime("");
+  };
+
+  if(loading){
+    return <p>Carregando...</p>
   }
 
   return (
@@ -86,6 +92,18 @@ function App() {
       <div className="list-tarefa">
         <h2>Lista de tarefas:</h2>
         {tarefas.length === 0 && <p>Não há tarefas!</p>}
+        {tarefas.map((tarefa) => (
+          <div className="tarefa" key={tarefa.id}>
+            <h3 className={tarefa.done ? "tarefa-done" : ""}>{tarefa.title}</h3>
+            <p>Duração: {tarefa.time}</p>
+            <div className="actions">
+              <span>
+                {!tarefa.done ? <BsBookmarkCheck /> : <BsBookmarkCheckFill />}
+              </span>
+              <BsTrash />
+            </div>
+          </div>
+        ))}
       </div>
 
     </div>
