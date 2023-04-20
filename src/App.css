@@ -15,3 +15,48 @@
 .tarefa-header h1{
     margin: 0;
 }
+
+
+
+.form-tarefa{
+    padding: 1em;
+    margin: 0 2em;
+    border-bottom: 1px solid #2C3035;
+}
+
+.form-tarefa h2,
+.list-tarefa h2 {
+    text-align: center;
+    margin-top: 0;
+}
+
+.form-control {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
+
+.form-control label {
+    font-weight: bold;
+    font-size: .7em;
+    margin-bottom: .4em;
+}
+
+.form-control input {
+    border: 1px solid #222;
+    border-radius: 2px;
+    background-color: #2C3035;
+    padding: .5em;
+    color: #DFDFDF;
+}
+
+input[type="submit"] {
+    background-color: #333;
+    color: #EEE;
+    display: block;
+    width: 100%;
+    border: 1px solid #222;
+    border-radius: 5px;
+    padding: 1em;
+    cursor: pointer;
+}
