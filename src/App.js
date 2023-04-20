@@ -60,6 +60,21 @@ function App() {
     setTarefas((prevState) => prevState.filter((tarefa) => tarefa.id !== id));
   };
 
+  const handleEdit = async (tarefa) => {
+    tarefa.done = !tarefa.done;
+
+    const data = await fetch(API + "/tarefas/" + tarefa.id, {
+      method: "PUT",
+      body: JSON.stringify(tarefa),
+      headers: {
+        "Content-Type": "application/json",
+      }
+    });
+
+    setTarefas((prevState) => 
+      prevState.map((t) => (t.id === data.id) ? (t = data) : t));
+  }
+
   if (loading) {
     return <p>Carregando...</p>
   }
@@ -105,7 +120,7 @@ function App() {
             <h3 className={tarefa.done ? "tarefa-done" : ""}>{tarefa.title}</h3>
             <p>Duração: {tarefa.time}</p>
             <div className="actions">
-              <span>
+              <span onClick={() => handleEdit(tarefa)}>
                 {!tarefa.done ? <BsBookmarkCheck /> : <BsBookmarkCheckFill />}
               </span>
               <BsTrash onClick={() => handleDelete(tarefa.id)} />
