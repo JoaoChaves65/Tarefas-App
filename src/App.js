@@ -52,7 +52,15 @@ function App() {
     setTime("");
   };
 
-  if(loading){
+  const handleDelete = async (id) => {
+    await fetch(API + "/tarefas/" + id, {
+      method: "DELETE",
+    });
+
+    setTarefas((prevState) => prevState.filter((tarefa) => tarefa.id !== id));
+  };
+
+  if (loading) {
     return <p>Carregando...</p>
   }
 
@@ -100,7 +108,7 @@ function App() {
               <span>
                 {!tarefa.done ? <BsBookmarkCheck /> : <BsBookmarkCheckFill />}
               </span>
-              <BsTrash />
+              <BsTrash onClick={() => handleDelete(tarefa.id)} />
             </div>
           </div>
         ))}
