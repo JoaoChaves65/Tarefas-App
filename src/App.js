@@ -1,17 +1,34 @@
 import "./App.css";
 
 import { useState, useEffect } from "react";
-import { BsTrash, BsBookmarkCheck, BsBookmarkCheckFill} from "react-icons/bs"
+import { BsTrash, BsBookmarkCheck, BsBookmarkCheckFill } from "react-icons/bs"
 
 const API = "http://localhost:5000";
 
 function App() {
-  const [title, setTitle] = useState("")
-  const [time, setTime] = useState("")
-  const [tarefas, setTarefas] = useState([])
-  const [loading, setLoading] = useState(false)
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState("");
+  const [tarefas, setTarefas] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+
+      const res = await fetch(API + "/tarefas")
+        .then((res) => res.json())
+        .then((data) => data)
+        .catch((err) => console.log(err));
+
+      setLoading(false);
+
+      setTarefas(res);
+    };
+
+    loadData();
+  }, [])
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const tarefa = {
@@ -21,8 +38,13 @@ function App() {
       done: false,
     };
 
-    // Envio pra api
-    console.log(tarefa)
+    await fetch(API + "/tarefas", {
+      method: "POST",
+      body: JSON.stringify(tarefa),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     setTitle("");
     setTime("");
@@ -38,10 +60,10 @@ function App() {
         <form onSubmit={handleSubmit}>
           <div className="form-control">
             <label htmlFor="title">O que você vai fazer?</label>
-            <input 
-              type="text" 
-              name="title" 
-              placeholder="Título da tarefa" 
+            <input
+              type="text"
+              name="title"
+              placeholder="Título da tarefa"
               onChange={(e) => setTitle(e.target.value)}
               value={title || ""}
               required
@@ -49,23 +71,23 @@ function App() {
           </div>
           <div className="form-control">
             <label htmlFor="time">Duração:</label>
-            <input 
-              type="text" 
-              name="time" 
-              placeholder="Tempo estimado (em horas)" 
+            <input
+              type="text"
+              name="time"
+              placeholder="Tempo estimado (em horas)"
               onChange={(e) => setTime(e.target.value)}
               value={time || ""}
               required
             />
           </div>
-          <input type="submit" value="Criar Tarefa"/>
+          <input type="submit" value="Criar Tarefa" />
         </form>
       </div>
       <div className="list-tarefa">
         <h2>Lista de tarefas:</h2>
         {tarefas.length === 0 && <p>Não há tarefas!</p>}
       </div>
-      
+
     </div>
   );
 }
